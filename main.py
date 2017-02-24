@@ -2,6 +2,8 @@ from flask import Flask
 import flask_login
 import flask
 from flask_pymongo import PyMongo
+from flask import session
+from flask import url_for
 
 
 
@@ -12,14 +14,18 @@ app.config["MONGO_DBNAME"] = "b"
 mongo = PyMongo(app)
 
 
+
+
+
 @app.route("/")
 def index():
 
-    return "Hello"
+    return flask.redirect(url_for('dashboard'))
 
 
 @app.route('/users')
 def users():
+
     users =  mongo.db.users.find()
     return flask.render_template('Users.html', users=users)
 
@@ -60,6 +66,27 @@ def unblock(fb_id):
         }
     )
     return flask.redirect(flask.url_for('users'))
+
+@app.route('/viewuser', methods=['GET', 'POST'])
+def viewuser():
+    if flask.request.method == "POST":
+
+        user = mongo.db.users.find_one({
+        'facebook_id':flask.request.form.get('fb_id')
+        })
+    else:
+        user = mongo.db.users.find_one({
+            'facebook_id': flask.request.args.get('fb_id')
+        })
+    return flask.render_template('Singleuser.html', user=user)
+
+@app.route('/reports')
+def reports():
+    reports = mongo.db.reports.find()
+    return flask.render_template('Reports.html', reports=reports)
+
+
+
 @app.route('/dashboard')
 def dashboard():
     no_of_users = mongo.db.users.count()

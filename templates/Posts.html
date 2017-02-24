@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+  <title>BloodBot::Admin Panel</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -45,7 +45,7 @@
                     <a href="{{ url_for('users') }}">Users</a>
                 </li>
                 <li>
-                    <a href="">Donar List</a>
+                   <a href="{{ url_for('donors') }}">Donors</a>
                 </li>
                 <li>
                     <a href="#">Receiver List</a>
@@ -55,7 +55,7 @@
                 </li>
 
                 <li>
-                    <a href="#">Reports</a>
+                   <a href="{{ url_for('reports') }}">Reports</a>
                 </li>
 
 
@@ -81,13 +81,11 @@
                             </tr>
                             {% for post in posts %}
                            <tr>
-                               <td>{{ post['facebook_id'] }}</td>
+                               <td><a href="{{ url_for('viewuser', fb_id=post['facebook_id']) }}"  >{{ post['facebook_id'] }}</a></td>
                                <td>{{ post['phone_number'] }}</td>
                                <td>{{ post['post_message'] }}
                                <td>{{ post['blood_group'] }}</td>
                                <td>{{ post['lat'] }} , {{ post['lon'] }}</td>
-
-
                            </tr>
                         {% endfor %}
                     </table>
